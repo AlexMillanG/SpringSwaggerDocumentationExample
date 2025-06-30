@@ -42,8 +42,33 @@ public class ClientController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<APIResponse> findById(@PathVariable Long id){
+    @Operation(summary = "Buscar cliente por ID", description = "Devuelve un cliente según su ID")
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Cliente encontrado exitosamente",
+                    content = {
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = APIResponse.class))
+                    }
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "No se encontró al cliente",
+                    content = {
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = APIResponse.class))
+                    }
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "Error interno al consultar al cliente",
+                    content = {
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = APIResponse.class))
+                    }
+            )
+    })
+    public ResponseEntity<APIResponse> findById(@PathVariable Long id) {
         APIResponse response = clientService.findById(id);
-        return new ResponseEntity<>(response,response.getStatus());
+        return new ResponseEntity<>(response, response.getStatus());
     }
+
 }
