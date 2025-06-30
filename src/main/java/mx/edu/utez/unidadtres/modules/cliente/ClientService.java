@@ -21,6 +21,7 @@ public class ClientService {
         return response;
     }
 
+    @Transactional(readOnly = true)
     public APIResponse findById(Long id){
         try {
             Optional<ClientEntity> found = clientRepository.findById(id);
@@ -32,4 +33,15 @@ public class ClientService {
             return new APIResponse("Error interno, no se puedo consultar al cliente",true,HttpStatus.NOT_FOUND);
         }
     }
+
+    @Transactional(readOnly = false)
+    public APIResponse save (ClientEntity payload){
+        try {
+
+            return new APIResponse(clientRepository.save(payload),"creado exitosamente",false,HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new APIResponse("error",true,HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 }

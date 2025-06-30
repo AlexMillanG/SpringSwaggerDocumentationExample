@@ -10,10 +10,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import mx.edu.utez.unidadtres.utils.APIResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/client")
@@ -70,5 +67,29 @@ public class ClientController {
         APIResponse response = clientService.findById(id);
         return new ResponseEntity<>(response, response.getStatus());
     }
+
+    @PostMapping("")
+    @Operation(summary = "Guardar cliente", description = "Registra un nuevo cliente en la base de datos")
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "201",
+                    description = "Cliente creado exitosamente",
+                    content = {
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = APIResponse.class))
+                    }
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "Error interno al guardar el cliente",
+                    content = {
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = APIResponse.class))
+                    }
+            )
+    })
+    public ResponseEntity<APIResponse> save(@RequestBody ClientEntity payload) {
+        APIResponse response = clientService.save(payload);
+        return new ResponseEntity<>(response, response.getStatus());
+    }
+
 
 }
