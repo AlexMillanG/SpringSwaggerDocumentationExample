@@ -20,6 +20,7 @@ public class MainSecurity {
             .cors(c -> c.configurationSource(corsRegistry()))
             .authorizeHttpRequests(auth -> auth
                     .requestMatchers("/api/client/").permitAll()
+                    .requestMatchers("/api/cede/").permitAll()
                     .requestMatchers("/swagger-ui.html",
                                      "/swagger-ui/**",
                                      "/v3/api-docs/**",
