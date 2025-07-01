@@ -14,15 +14,33 @@ public class CedeController {
     @Autowired
     private CedeService cedeService;
 
-    @GetMapping("")
+    @GetMapping(value = {"","/"})
     public ResponseEntity<APIResponse> findAll (){
         APIResponse response = cedeService.findAll();
         return new ResponseEntity<>(response,response.getStatus());
     }
 
-    @PostMapping("")
+    @PostMapping(value = {"","/"})
     public ResponseEntity<APIResponse> save (@RequestBody CedeEntity cede){
         APIResponse response = cedeService.save(cede);
+        return new ResponseEntity<>(response,response.getStatus());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<APIResponse> findById(@PathVariable Long id){
+        APIResponse response = cedeService.findById(id);
+        return new ResponseEntity<>(response,response.getStatus());
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<APIResponse> delete(@PathVariable Long id){
+        APIResponse response = cedeService.delete(id);
+        return new ResponseEntity<>(response,response.getStatus());
+    }
+
+    @PutMapping(value = {"","/"})
+    public ResponseEntity<APIResponse> update (@RequestBody CedeEntity cede){
+        APIResponse response = cedeService.update(cede);
         return new ResponseEntity<>(response,response.getStatus());
     }
 }

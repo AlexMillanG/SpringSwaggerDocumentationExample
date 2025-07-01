@@ -18,7 +18,7 @@ public class ClientController {
     @Autowired
     private ClientService clientService;
 
-    @GetMapping("")
+    @GetMapping(value = {"","/"})
     @Operation(summary = "Traer clientes", description = "trae clientes")
     @ApiResponses({
             @ApiResponse(
@@ -66,7 +66,7 @@ public class ClientController {
         return new ResponseEntity<>(response, response.getStatus());
     }
 
-    @PostMapping("")
+    @PostMapping(value = {"","/"})
     @Operation(summary = "Guardar cliente", description = "Registra un nuevo cliente en la base de datos")
     @ApiResponses({
             @ApiResponse(
