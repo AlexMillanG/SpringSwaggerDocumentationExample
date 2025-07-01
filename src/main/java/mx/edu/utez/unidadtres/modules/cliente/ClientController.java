@@ -1,6 +1,5 @@
 package mx.edu.utez.unidadtres.modules.cliente;
 
-
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -11,7 +10,6 @@ import mx.edu.utez.unidadtres.utils.APIResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 @RestController
 @RequestMapping("/api/client")
 @Tag(name = "controlador de clientes", description = "nsdflknadsflsdnn")
