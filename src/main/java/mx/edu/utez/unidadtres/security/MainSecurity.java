@@ -1,5 +1,4 @@
 package mx.edu.utez.unidadtres.security;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -17,67 +16,69 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.List;
-
 @Configuration
 @EnableWebSecurity
+
 public class MainSecurity {
-    //ROLES: ADMIN, EMPLOYEE, CUSTOMER, ETC.
-    //roles en otros archivos: ROLE_ADMIN, ROLE_EMPLOYEE, ROLE_CUSTOMER
+
     @Bean
     public SecurityFilterChain doFilterInternal(HttpSecurity http) throws Exception{
-        http.csrf(c -> c.disable())
-            .cors(c -> c.configurationSource(corsRegistry()))
-            .authorizeHttpRequests(auth -> auth
-                    .requestMatchers("/api/client/**").hasRole("ADMIN")
-                    .requestMatchers("/api/cede/**").hasRole("EMPLOYEE")
-                    .requestMatchers("/swagger-ui.html",
-                                     "/swagger-ui/**",
-                                     "/v3/api-docs/**",
-                                     "/v3/api-docs.yaml",
-                                     "/swagger-resources/**",
-                                     "/webjars/**")
-            .hasRole("DEV").anyRequest().authenticated()).httpBasic(Customizer.withDefaults());
+        http.csrf(c-> c.disable()).cors(c -> c.configurationSource(corsRegistry()))
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/api/client/**").hasRole("ADMIN")
+                        .requestMatchers("/api/cede/**").hasRole("EMPLOYEE")
+                        .requestMatchers(
+                                "/swagger-ui.html",
+                                "/swagger-ui/**",
+                                "/v3/api-docs/**",
+                                "/v3/api-docs.yaml",
+                                "/swagger-resources/**",
+                                "/webjars/**"
+                        ).hasAnyRole("DEV", "ADMIN")
+                        .anyRequest().authenticated()
+
+                );
 
         return http.build();
     }
-
     private CorsConfigurationSource corsRegistry(){
-        //que queremos configurar
         CorsConfiguration configuration = new CorsConfiguration();
-
         configuration.setAllowedOrigins(List.of("*"));
-        configuration.setAllowedMethods(List.of("POST", "PUT","PATCH","DELETE","GET","OPTIONS"));
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*"));
-        configuration.setAllowCredentials(false);//cookies
+        configuration.setAllowCredentials(false);
 
-        //en donde lo debemos aplicar
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**",configuration);
+        source.registerCorsConfiguration("/**", configuration);
         return source;
+
     }
+    /*
+        @Bean
+        public UserDetailsService generateUsers(){
+            UserDetails admin= User.builder()
+                    .username("superadmin")
+                    .password(passwordEncoder().encode("1234"))
+                    .roles("ADMIN")
+                    .build();
+            UserDetails employee= User.builder()
+                    .username("employee")
+                    .password(passwordEncoder().encode("1234"))
+                    .roles("EMPLOYEE")
+                    .build();
 
-    @Bean
-    public UserDetailsService generateUsers(){
-        UserDetails admin = User.builder()
-                .username("admin")
-                .password(passwordEncoder().encode("123456789"))
-                .roles("ADMIN").build();
+            UserDetails swagerAdmin= User.builder()
+                    .username("swager")
+                    .password(passwordEncoder().encode("1234"))
+                    .roles("DEV")
+                    .build();
 
-        UserDetails employee = User.builder()
-                .username("employee")
-                .password(passwordEncoder().encode("123456789"))
-                .roles("ADMIN").build();
-
-        UserDetails swaggerAdmin = User.builder()
-                .username("swaggerAdmin")
-                .password(passwordEncoder().encode("123456789"))
-                .roles("DEV").build();
-
-        return new InMemoryUserDetailsManager(admin,employee,swaggerAdmin);
-    }
-
+            return  new InMemoryUserDetailsManager(admin,employee,swagerAdmin);
+        }
+    */
     @Bean
     public PasswordEncoder passwordEncoder(){
-        return new BCryptPasswordEncoder();
+        return  new BCryptPasswordEncoder();
     }
+
 }
