@@ -1,38 +1,24 @@
-package mx.edu.utez.unidadtres.utils;
-
+package mx.edu.utez.unidad3.utils;
 
 import org.springframework.http.HttpStatus;
 
 public class APIResponse {
-
-    private Object data;
     private String message;
+    private Object data;
     private boolean error;
     private HttpStatus status;
 
-    public APIResponse() {
-    }
-
-    public APIResponse(Object data, String message, boolean error, HttpStatus status) {
-        this.data = data;
+    public APIResponse(String message, boolean error, HttpStatus status) {
         this.message = message;
         this.error = error;
         this.status = status;
     }
 
-    public APIResponse(String message,  boolean error,HttpStatus status) {
+    public APIResponse(String message, Object data, boolean error, HttpStatus status) {
         this.message = message;
-        this.status = status;
-        this.error = error;
-    }
-
-
-    public Object getData() {
-        return data;
-    }
-
-    public void setData(Object data) {
         this.data = data;
+        this.error = error;
+        this.status = status;
     }
 
     public String getMessage() {
@@ -41,6 +27,14 @@ public class APIResponse {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public Object getData() {
+        return data;
+    }
+
+    public void setData(Object data) {
+        this.data = data;
     }
 
     public boolean isError() {

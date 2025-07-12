@@ -1,16 +1,19 @@
-package mx.edu.utez.unidadtres.utils;
+package mx.edu.utez.unidad3.utils;
 
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class SwaggerConfig {
-
-    public OpenAPI config (){
+    @Bean
+    public OpenAPI config() {
         return new OpenAPI().info(new Info()
-                .title("api rest de almacenes")
-                .description("Documentcaicon")
-                .version("V1.0"));
+        .title("API REST de almacenes")
+                .description("Documentacion de los endpoints del servicio de almacenes")
+                .version("V1.0")
+                );
     }
+
 }
